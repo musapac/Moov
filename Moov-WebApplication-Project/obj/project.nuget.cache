@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "zKUJyAnXLQnO5VGlYZuzGbI02JW+jPio/23WRz+Zq0x07nEOofIHE2YVQoztrXpO9Ee4w5cSRtw83ZvhiJ3KIw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\musa.m\\source\\repos\\Moov-WebApplication-Project\\Moov-WebApplication-Project\\Moov-WebApplication-Project.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\musa.m\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

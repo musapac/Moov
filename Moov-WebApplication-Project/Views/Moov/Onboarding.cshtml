@@ -1,0 +1,68 @@
+﻿@{
+    Layout = null;
+}
+<style style="background-color:#222222"></style>
+<style>
+    :root {
+        --moov-color-background: #25262D;
+        --moov-color-background-secondary: #2D3037;
+        --moov-color-background-tertiary: #3A3C45;
+        --moov-color-primary: #6171F9;
+        --moov-color-secondary: #828FFE;
+        --moov-color-tertiary: #494A57;
+        --moov-color-info: #94CBFF;
+        --moov-color-warn: #EB5757;
+        --moov-color-danger: #ED655C;
+        --moov-color-success: #62E599;
+        --moov-color-low-contrast: #9294A0;
+        --moov-color-medium-contrast: #EBEBEF;
+        --moov-color-high-contrast: #FFFFFF;
+        --moov-color-graphic-1: #62E599;
+        --moov-color-graphic-2: #62E599;
+        --moov-color-graphic-3: #62E599;
+    }
+</style>
+<moov-onboarding></moov-onboarding>
+<moov-onboarding-method></moov-onboarding-method>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://js.moov.io/v1"></script>
+<script>
+    $(document).ready(function () {
+        var token = "@ViewBag.tokenRet";
+        const onboarding = document.querySelector('moov-onboarding');
+        onboarding.token = token;
+        onboarding.facilitatorAccountID = "217b54bc-1842-470e-95b0-71d329fb19ca";
+        onboarding.open = true; //calling onboarding screen
+        onboarding.onCancel = () => {
+        }
+        onboarding.onResourceCreated = ({ resourceType, resource }) => {
+            if (resourceType === "account") {
+                localStorage.setItem('resource', resource);
+                // TODO: Get accountid from resource object and store in local storage
+                localStorage.setItem('accountID', resource.accountID);
+                // getting accountID from localstorage
+                var newAccountID = localStorage.getItem('accountID');
+                // sc = all scopes are added in sc variable
+                var sc = `/fed.read,/accounts/${newAccountID}/bank-accounts.read,/accounts/${newAccountID}/bank-accounts.write,/accounts/${newAccountID}/capabilities.read,/accounts/${newAccountID}/capabilities.write,/accounts/${newAccountID}/cards.read,/accounts/${newAccountID}/cards.write,/accounts/${newAccountID}/profile.read,/accounts/${newAccountID}/profile.write,/accounts/${newAccountID}/representatives.read,/accounts/${newAccountID}/representatives.write`;
+                // TODO: Then again if you need token with new scopes, make anajax call to token request with new scopes
+                $.ajax({
+                    url: '/Moov/Token', // setting url
+                    type: 'POST',
+                    dataType: 'text',
+                    contentType: 'application/json',
+                    data: JSON.stringify(sc), //  sc variables to send to parameters
+                    success: function (response) {
+                        myToken1 = response.replace('"', ''); // receiving token
+                        myToken2 = myToken1.replace('"', ''); // receiving token
+                        onboarding.token = myToken2;
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+
+            }
+        }
+    });
+</script>
