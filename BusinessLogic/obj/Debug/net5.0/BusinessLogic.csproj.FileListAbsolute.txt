@@ -1,0 +1,12 @@
+C:\Workspace\Github\Moov\BusinessLogic\bin\Debug\net5.0\BusinessLogic.deps.json
+C:\Workspace\Github\Moov\BusinessLogic\bin\Debug\net5.0\BusinessLogic.dll
+C:\Workspace\Github\Moov\BusinessLogic\bin\Debug\net5.0\BusinessLogic.pdb
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\BusinessLogic.csproj.AssemblyReference.cache
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\BusinessLogic.AssemblyInfoInputs.cache
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\BusinessLogic.AssemblyInfo.cs
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\BusinessLogic.dll
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\refint\BusinessLogic.dll
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\BusinessLogic.pdb
+C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\ref\BusinessLogic.dll

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Moov_WebApplication_Project
+namespace Moov_WebApp
 {
     public class Program
     {

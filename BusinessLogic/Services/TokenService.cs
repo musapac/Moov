@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Moov.Application.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -7,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using WebAPiTest.Models.Moov;
 
-namespace Moov_WebApplication_Project.Services
+namespace Moov.Application.Services
 {
-    public class TokenService
+    public class TokenService :ITokenService
     {
              
         private readonly IConfiguration _Config;
@@ -76,6 +77,11 @@ namespace Moov_WebApplication_Project.Services
                 }
                 return null;
             }
-        }       
+        }
+
+        public Task<string> Onboarding()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

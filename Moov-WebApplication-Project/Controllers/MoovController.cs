@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Moov_WebApplication_Project.Services;
+using Moov.Application.Interfaces;
 using System.Threading.Tasks;
 
-namespace Moov_WebApplication_Project.Controllers
+namespace Moov_WebApp.Controllers
 {
     public class MoovController : Controller
     {
-        private readonly TokenService _tokenService;
-        public MoovController(TokenService tokenService)
+        private readonly ITokenService _tokenService;
+        public MoovController(ITokenService tokenService)
         {
             _tokenService = tokenService;
         }

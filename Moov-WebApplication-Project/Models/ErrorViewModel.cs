@@ -1,6 +1,6 @@
 using System;
 
-namespace Moov_WebApplication_Project.Models
+namespace Moov_WebApp.Models
 {
     public class ErrorViewModel
     {

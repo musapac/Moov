@@ -1,17 +1,17 @@
+using Moov.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
- 
-using Moov_WebApplication_Project.Services;
+using Moov.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Moov_WebApplication_Project
+namespace Moov_WebApp
 {
     public class Startup
     {
@@ -27,7 +27,7 @@ namespace Moov_WebApplication_Project
         {
             services.AddControllersWithViews();
             services.AddMvc();
-            services.AddScoped<TokenService>();
+            services.AddScoped<ITokenService, TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
