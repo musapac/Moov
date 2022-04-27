@@ -23,7 +23,8 @@
     }
 </style>
 <moov-onboarding></moov-onboarding>
-<moov-onboarding-method></moov-onboarding-method>
+@*<moov-onboarding-method></moov-onboarding-method>
+<moov-card-link></moov-card-link>*@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://js.moov.io/v1"></script>
 <script>
@@ -54,14 +55,40 @@
                     success: function (response) {
                         myToken1 = response.replace('"', ''); // receiving token
                         myToken2 = myToken1.replace('"', ''); // receiving token
-                        onboarding.token = myToken2;
+                          onboarding.token = myToken2;                          
+                          onboarding.plaid = {
+                              redirectURL: "https://localhost:44354",
+                              env: "sandbox",  // leave this off if production
+                              onExit: (...args) => console.log("on plaid exit", ...args),
+                              onEvent: (...args) => console.log("on plaid event", ...args),
+                              onLoad: (...args) => console.log("on plaid load", ...args),
+                              onSuccess: (...args) => console.log("on plaid success", ...args),
+                            };
+                         const moov = Moov(myToken2);                             
+                         moov.plaid.initialize({
+                              accountID: newAccountID,
+                              redirectURL: "https://localhost:44354",
+                              onSuccess: (bankAccount) => {
+                                  debugger;
+                                  console.log("This")
+                                // Moov bank account object will be passed on success
+                              },
+                              onExit: (err, metadata) => {
+                                //optionally handle exit event
+                              },
+                              onEvent: (eventName, metadata) => {
+                                //optionally handle events
+                              }
+                            })
+                              .then(handler => {
+                                handler.open()
+                              })
 
                     },
                     error: function () {
                         alert("error");
                     }
                 });
-
             }
         }
     });
