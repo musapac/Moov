@@ -32,6 +32,7 @@
         var token = "@ViewBag.tokenRet";
         const onboarding = document.querySelector('moov-onboarding');
         onboarding.token = token;
+        const moov = Moov(token);  
         onboarding.facilitatorAccountID = "217b54bc-1842-470e-95b0-71d329fb19ca";
         onboarding.open = true; //calling onboarding screen
         onboarding.onCancel = () => {
@@ -64,13 +65,14 @@
                               onLoad: (...args) => console.log("on plaid load", ...args),
                               onSuccess: (...args) => console.log("on plaid success", ...args),
                             };
-                         const moov = Moov(myToken2);                             
+
+                         //const moov = Moov(myToken2);                             
                          moov.plaid.initialize({
                               accountID: newAccountID,
                               redirectURL: "https://localhost:44354",
                               onSuccess: (bankAccount) => {
                                   debugger;
-                                  console.log("This")
+                                  console.log("Bank Account"+ bankAccount);
                                 // Moov bank account object will be passed on success
                               },
                               onExit: (err, metadata) => {

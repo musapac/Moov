@@ -42,3 +42,7 @@ C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Moov-WebAp
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\ref\Moov-WebApp.dll
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\Moov.Application.dll
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\Moov.Application.pdb
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\assets\vendor\bootstrap-icons\bootstrap-icons.json
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\BackendByPass.cshtml.g.cs
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\Menu.cshtml.g.cs
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\ErrorPage.cshtml.g.cs

@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Moov_WebApp
 {
@@ -28,6 +31,7 @@ namespace Moov_WebApp
             services.AddControllersWithViews();
             services.AddMvc();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAccountService, AccountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,13 +43,18 @@ namespace Moov_WebApp
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Moov/ErrorPage");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                            Path.Combine(Directory.GetCurrentDirectory(), @"assets")),
+                RequestPath = new PathString("/assets")
+            });
             app.UseRouting();
 
             app.UseAuthorization();
@@ -54,7 +63,7 @@ namespace Moov_WebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Moov}/{action=Onboarding}/{id?}");
+                    pattern: "{controller=Moov}/{action=Menu}/{id?}");
             });
         }
     }

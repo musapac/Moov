@@ -10,24 +10,25 @@ using WebAPiTest.Models.Moov;
 
 namespace Moov.Application.Services
 {
-    public class TokenService :ITokenService
+    public class TokenService : ITokenService
     {
-             
+
         private readonly IConfiguration _Config;
-      
+
         public TokenService(IConfiguration configuration)
         {
             _Config = configuration;
 
         }
         public async Task<string> TokenGen()
-        {            
+        {
             //token generation
             string apiUrlToken = _Config["TokenParameter:apiUrlTok"];
 
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(apiUrlToken);
+
                 var token = new CreateAccessTokenRequest
                 {
                     grant_type = _Config["TokenParameter:grant_type"],
@@ -35,7 +36,7 @@ namespace Moov.Application.Services
                     client_secret = _Config["TokenParameter:client_secret"],
                     scope = _Config["TokenParameter:scope"],
                     refresh_token = _Config["TokenParameter:refresh_token"],
-            };
+                };
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var body = JsonConvert.SerializeObject(token);
                 var stringContent = new StringContent(body, UnicodeEncoding.UTF8, "application/json");
@@ -45,7 +46,7 @@ namespace Moov.Application.Services
                     var result = await response.Content.ReadAsStringAsync();
                     var data = JsonConvert.DeserializeObject<CreateAccessTokenResponse>(result);
                     var s = data.access_token;
-                    return s;                   
+                    return s;
                 }
             }
             return null;
