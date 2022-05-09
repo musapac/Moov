@@ -49,9 +49,9 @@ namespace Moov.Application.Services
                             {
                                 name = new Name()
                                 {
-                                    firstName = "Musa",
-                                    middleName = "Musa",
-                                    lastName = "Musa",
+                                    firstName = "Rose",
+                                    middleName = "Marry",
+                                    lastName = "David",
                                     suffix = "Jr"
                                 },
                                 phone = new Phone()
@@ -116,9 +116,9 @@ namespace Moov.Application.Services
             }
             return null;
         }
-        public async Task AddCapabilities(string getId)
+        public async Task AddCapabilities(string accountId)
         {
-            var accountID = getId;
+            var accountID = accountId;
             var token = await _tokenService.ScopeToken($"/accounts/{accountID}/capabilities.write");
             if (token is not null)
             {
@@ -157,9 +157,9 @@ namespace Moov.Application.Services
         }
 
 
-        public async Task LinkBankAccount(string getId)
+        public async Task<string> LinkBankAccount(string accountId)
         {
-            var accountID = getId;
+            var accountID = accountId;
             var token = await _tokenService.ScopeToken($"/accounts/{accountID}/bank-accounts.write");
             if (token is not null)
             {
@@ -191,6 +191,8 @@ namespace Moov.Application.Services
                     {
                         var result = await response.Content.ReadAsStringAsync();
                         var data = JsonConvert.DeserializeObject<dynamic>(result);
+                        var bankId = data.bankAccountID;
+                        return bankId;
 
                     }
                     else
@@ -198,8 +200,11 @@ namespace Moov.Application.Services
                         var result = await response.Content.ReadAsStringAsync();
                         var data = JsonConvert.DeserializeObject<dynamic>(result);
                     }
+
                 }
+
             }
+            return null;
         }
         public async Task<string> PlaidToken()
         {
@@ -323,8 +328,68 @@ namespace Moov.Application.Services
             }
 
         }
-
-    }
+        public async Task<string> ProcessorToken(string accountId, string accessToken)
+        {
+            var token = await _tokenService.ScopeToken("/accounts.write");
+            if (token is not null)
+            {
+                string accountbaseURL = "https://sandbox.plaid.com/item/public_token/exchange";
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(accountbaseURL);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var request = new ProcessorTokenRequest
+                    {
+                        client_id = "5f630e745f6405001006a53f",
+                        secret = "4df1af77f1f2adf27c6c6241f624f0",
+                        access_token = accessToken,
+                        account_id = accountId,
+                        processor = "moov"
+                    };
+                    var requestBody = JsonConvert.SerializeObject(request);
+                    var stringContent = new StringContent(requestBody, UnicodeEncoding.UTF8, "application/json");
+                    var response = await client.PostAsync(accountbaseURL, stringContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<dynamic>(result);
+                        //var accessToken = data.access_token;
+                        return accessToken;
+                    }
+                    else
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<dynamic>(result);
+                    }
+                    return null;
+                }
+            }
+            else {
+                return null;
+            }
+            return null;
+        }
+        public async Task AutoMicroDepositAsync(string accountId, string bankId)
+        {
+            var token = await _tokenService.ScopeToken($"/accounts/{accountId}/bank-accounts.write");
+            if (token is not null)
+            {
+                string accountbaseURL = $"https://api.moov.io/accounts/{accountId}/bank-accounts/{bankId}/micro-deposits";
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(accountbaseURL);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+                }
+            }
+            else
+            {
+                
+            }
+            
+        }
+    } 
+    
 }
 //}
 

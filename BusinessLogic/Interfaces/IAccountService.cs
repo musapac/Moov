@@ -11,10 +11,12 @@ namespace Moov.Application.Interfaces
     public interface IAccountService
     {
         public Task<string> CreateAccount();
-        public Task AddCapabilities(string getId);
-        public Task LinkBankAccount(string getId);
+        public Task AddCapabilities(string accountId);
+        public Task<string> LinkBankAccount(string accountId);
         public Task<string> PlaidToken();
         public Task<string> PublicToken();
         public Task<string> ExchangePublicToken(string publicToken);
+        public Task<string> ProcessorToken(string accountId, string accessToken);
+        Task AutoMicroDepositAsync(string accountId, string bankId);
     }
 }
