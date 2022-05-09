@@ -225,7 +225,8 @@ namespace Moov.Application.Services
                     country_codes = new List<string> { "US" },
                     language = "en",
                     products = new List<string> { "auth" },
-                    user = new User {
+                    user = new User
+                    {
                         client_user_id = "5f630e745f6405001006a53f",
                     }
                 };
@@ -250,7 +251,79 @@ namespace Moov.Application.Services
             }
 
         }
-     
+        //Creating public token
+        public async Task<string> PublicToken()
+        {
+            string accountbaseURL = "https://sandbox.plaid.com/sandbox/public_token/create";
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(accountbaseURL);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var request = new PublicTokenRequest
+
+                {
+                    client_id = "5f630e745f6405001006a53f",
+                    secret = "4df1af77f1f2adf27c6c6241f624f0",
+                    institution_id = "ins_3",
+                    initial_products = new List<string> { "auth" },
+                    options = new Options
+                    {
+                        webhook = "https://www.genericwebhookurl.com/webhook"
+                    }
+
+                };
+                var requestBody = JsonConvert.SerializeObject(request);
+                var stringContent = new StringContent(requestBody, UnicodeEncoding.UTF8, "application/json");
+                var response = await client.PostAsync(accountbaseURL, stringContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<dynamic>(result);
+                    var getPublicToken = data.public_token;
+                    return getPublicToken;
+                }
+                else
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<dynamic>(result);
+                }
+                return null;
+            }
+
+        }
+        public async Task<string> ExchangePublicToken(string publicToken)
+        {
+            string accountbaseURL = "https://sandbox.plaid.com/item/public_token/exchange";
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(accountbaseURL);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var request = new ExchangePubTokenRequest
+                {
+                    client_id = "5f630e745f6405001006a53f",
+                    secret = "4df1af77f1f2adf27c6c6241f624f0",
+                    public_token = publicToken
+                };
+                var requestBody = JsonConvert.SerializeObject(request);
+                var stringContent = new StringContent(requestBody, UnicodeEncoding.UTF8, "application/json");
+                var response = await client.PostAsync(accountbaseURL, stringContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<dynamic>(result);
+                    var accessToken = data.access_token;
+                    return accessToken;
+                }
+                else
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<dynamic>(result);
+                }
+                return null;
+            }
+
+        }
+
     }
 }
 //}

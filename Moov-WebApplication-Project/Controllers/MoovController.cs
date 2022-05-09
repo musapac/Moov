@@ -98,5 +98,16 @@ namespace Moov_WebApp.Controllers
             //ViewBag.getLinkToken = getLinkToken;
             return getLinkToken;
         }
+        public async Task<string> GenPublicToken()
+        {
+            var getPublicToken = await _accountService.PublicToken();          
+            return getPublicToken;
+        }
+        public async Task<string> ExchangePublicTok()
+        {
+            var publicToken = await GenPublicToken();
+            var accessToken = await _accountService.ExchangePublicToken(publicToken);
+            return accessToken;
+        }
     }
 }

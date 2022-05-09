@@ -14,5 +14,7 @@ namespace Moov.Application.Interfaces
         public Task AddCapabilities(string getId);
         public Task LinkBankAccount(string getId);
         public Task<string> PlaidToken();
+        public Task<string> PublicToken();
+        public Task<string> ExchangePublicToken(string publicToken);
     }
 }
