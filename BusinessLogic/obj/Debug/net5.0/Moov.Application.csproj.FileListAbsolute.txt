@@ -7,6 +7,6 @@ C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\Moov.Application.Assembl
 C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\Moov.Application.AssemblyInfo.cs
 C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\Moov.Application.csproj.CoreCompileInputs.cache
 C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\Moov.Application.dll
-C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\refint\Moov.Application.dll
 C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\Moov.Application.pdb
 C:\Workspace\Github\Moov\BusinessLogic\obj\Debug\net5.0\ref\Moov.Application.dll
+C:\Workspace\Github\Moov\BusinessLogic\bin\Debug\net5.0\ref\Moov.Application.dll

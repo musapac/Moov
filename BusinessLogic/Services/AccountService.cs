@@ -6,6 +6,7 @@ using Moov.Application.Moov;
 using Moov.Application.Moov.Request;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Moov.Application.Services
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("Origin", value: _Config["Accounts:OriginUri"]);
                     client.DefaultRequestHeaders.Add("Referer", value: _Config["Accounts:BaseUri"]);
-                     
+
                     var request = new CreateAccount
                     {
                         mode = "sandbox",
@@ -48,9 +49,9 @@ namespace Moov.Application.Services
                             {
                                 name = new Name()
                                 {
-                                    firstName = "Amanda",
-                                    middleName = "Amanda",
-                                    lastName = "Yang",
+                                    firstName = "Musa",
+                                    middleName = "Musa",
+                                    lastName = "Musa",
                                     suffix = "Jr"
                                 },
                                 phone = new Phone()
@@ -59,7 +60,7 @@ namespace Moov.Application.Services
                                     countryCode = "1"
 
                                 },
-                                email = "Final@gmail.com",
+                                email = "Musa@gmail.com",
                                 address = new Address()
                                 {
                                     addressLine1 = "123 Main Street",
@@ -85,10 +86,10 @@ namespace Moov.Application.Services
 
                                 },
                             },
-                             
+
                         },
                         foreignID = "1122aba-b9a1-11eb-8529-0121ac13014",
-                        
+
                     };
                     var rnd = new Random();
                     var s = rnd.Next(1000, 5000);
@@ -102,15 +103,15 @@ namespace Moov.Application.Services
                         var result = await response.Content.ReadAsStringAsync();
                         var data = JsonConvert.DeserializeObject<dynamic>(result);
                         var getAccountId = data.accountID;
-                        return getAccountId;                         
+                        return getAccountId;
                     }
                     else
                     {
                         var result = await response.Content.ReadAsStringAsync();
                         var data = JsonConvert.DeserializeObject<dynamic>(result);
-                        
+
                     }
-                   
+
                 }
             }
             return null;
@@ -118,7 +119,7 @@ namespace Moov.Application.Services
         public async Task AddCapabilities(string getId)
         {
             var accountID = getId;
-            var token = await _tokenService.ScopeToken($"/accounts/{accountID}/capabilities.read");
+            var token = await _tokenService.ScopeToken($"/accounts/{accountID}/capabilities.write");
             if (token is not null)
             {
                 string accountbaseURL = $"https://api.moov.io/accounts/{accountID}/capabilities";
@@ -130,57 +131,11 @@ namespace Moov.Application.Services
                     client.DefaultRequestHeaders.Add("Origin", value: _Config["Accounts:OriginUri"]);
                     client.DefaultRequestHeaders.Add("Referer", value: _Config["Accounts:BaseUri"]);
 
-                    var request = new CreateAccount
+                    var request = new CapabilitiesRequest
                     {
-                        mode = "sandbox",
-                        accountType = "individual",
-                        profile = new Profile()
-                        {
-                            individual = new Individual()
-                            {
-                                name = new Name()
-                                {
-                                    firstName = "Amanda",
-                                    middleName = "Amanda",
-                                    lastName = "Yang",
-                                    suffix = "Jr"
-                                },
-                                phone = new Phone()
-                                {
-                                    number = "8185551212",
-                                    countryCode = "1"
 
-                                },
-                                email = "pioneer@gmail.com",
-                                address = new Address()
-                                {
-                                    addressLine1 = "123 Main Street",
-                                    addressLine2 = "Apt 302",
-                                    city = "Boulder",
-                                    stateOrProvince = "CO",
-                                    postalCode = "80301",
-                                    country = "US"
-                                },
-                                birthDate = new BirthDate()
-                                {
-                                    day = 9,
-                                    month = 11,
-                                    year = 1989
-                                },
-                                governmentID = new GovernmentID()
-                                {
-                                    ssn = new Ssn()
-                                    {
-                                        full = "123-45-6789",
-                                        lastFour = "6789"
-                                    },
-
-                                },
-                            },
-
-                        },
-
-                        foreignID = "1112aba-b9a1-11eb-8529-0121ac13003",
+                        capabilities = new List<string>
+                            {  "transfers" }
 
                     };
                     var requestBody = JsonConvert.SerializeObject(request);
@@ -201,33 +156,81 @@ namespace Moov.Application.Services
             }
         }
 
-    
-    public async Task LinkBankAccount(string getId)
-    {
-        var accountID = getId;
-        var token = await _tokenService.ScopeToken($"/accounts/{accountID}/bank-accounts.write");
-        if (token is not null)
+
+        public async Task LinkBankAccount(string getId)
         {
-            string accountbaseURL = $"https://api.moov.io/accounts/{accountID}/bank-accounts";
+            var accountID = getId;
+            var token = await _tokenService.ScopeToken($"/accounts/{accountID}/bank-accounts.write");
+            if (token is not null)
+            {
+                string accountbaseURL = $"https://api.moov.io/accounts/{accountID}/bank-accounts";
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(accountbaseURL);
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("Origin", value: _Config["Accounts:OriginUri"]);
+                    client.DefaultRequestHeaders.Add("Referer", value: _Config["Accounts:BaseUri"]);
+
+                    var request = new LinkBankAccountRequest
+                    {
+                        account = new Account()
+                        {
+                            holderName = "Musa",
+                            holderType = "individual",
+                            accountNumber = "0004321567000",
+                            bankAccountType = "checking",
+                            routingNumber = "000000000",
+                        }
+
+                    };
+                    var requestBody = JsonConvert.SerializeObject(request);
+                    var stringContent = new StringContent(requestBody, UnicodeEncoding.UTF8, "application/json");
+                    var response = await client.PostAsync(accountbaseURL, stringContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<dynamic>(result);
+
+                    }
+                    else
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<dynamic>(result);
+                    }
+                }
+            }
+        }
+        public async Task<string> PlaidToken()
+        {
+            var client_id = "5f630e745f6405001006a53f";
+            //var token = await _tokenService.ScopeToken($"/accounts/{accountID}/bank-accounts.write");
+            //if (token is not null)
+            //{
+            string accountbaseURL = "https://sandbox.plaid.com/link/token/create";
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(accountbaseURL);
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+                //client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //client.DefaultRequestHeaders.Add("Origin", value: _Config["Accounts:OriginUri"]);
                 //client.DefaultRequestHeaders.Add("Referer", value: _Config["Accounts:BaseUri"]);
 
-                var request = new LinkBankAccountRequest
+                var request = new PlaidTokenRequest
                 {
-                      account=new Account() {
-                        holderName= "Jules Jackson",
-                        holderType= "individual",
-                        accountNumber= "0004321567000",
-                        bankAccountType= "checking",
-                        routingNumber= "123456789",
-                        }
 
+                    client_id = "5f630e745f6405001006a53f",
+                    secret = "4df1af77f1f2adf27c6c6241f624f0",
+                    client_name = "user_good",
+                    country_codes = new List<string> { "US" },
+                    language = "en",
+                    products = new List<string> { "auth" },
+                    user = new User {
+                        client_user_id = "5f630e745f6405001006a53f",
+                    }
                 };
+
+
                 var requestBody = JsonConvert.SerializeObject(request);
                 var stringContent = new StringContent(requestBody, UnicodeEncoding.UTF8, "application/json");
                 var response = await client.PostAsync(accountbaseURL, stringContent);
@@ -235,19 +238,22 @@ namespace Moov.Application.Services
                 {
                     var result = await response.Content.ReadAsStringAsync();
                     var data = JsonConvert.DeserializeObject<dynamic>(result);
-
+                    var getPlaidToken = data.link_token;
+                    return getPlaidToken;
                 }
                 else
                 {
                     var result = await response.Content.ReadAsStringAsync();
                     var data = JsonConvert.DeserializeObject<dynamic>(result);
                 }
+                return null;
             }
-        }
-    }
 
+        }
+     
     }
 }
+//}
 
 
 

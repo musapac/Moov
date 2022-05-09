@@ -13,5 +13,6 @@ namespace Moov.Application.Interfaces
         public Task<string> CreateAccount();
         public Task AddCapabilities(string getId);
         public Task LinkBankAccount(string getId);
+        public Task<string> PlaidToken();
     }
 }

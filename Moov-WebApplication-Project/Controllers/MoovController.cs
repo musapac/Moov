@@ -63,7 +63,16 @@ namespace Moov_WebApp.Controllers
            return View();
 
         }
+        public async Task<IActionResult> MenuMoov()
+        {
+            var getId = await UserAccount();
+            await _accountService.AddCapabilities(getId);
+            await _accountService.LinkBankAccount(getId);
+            return View();
+
+        }
         public async Task Capabilities()
+        
         {
             var getId = await UserAccount();
             await _accountService.AddCapabilities(getId);
@@ -77,7 +86,17 @@ namespace Moov_WebApp.Controllers
         public IActionResult ErrorPage()
         {
             return View();
-
+        }
+        public async Task<string> Plaid()
+        {
+           var s= await _accountService.PlaidToken();
+            return s;
+        }
+        public async Task<string> GetPlaidToken()
+        {
+            var getLinkToken = await Plaid();
+            //ViewBag.getLinkToken = getLinkToken;
+            return getLinkToken;
         }
     }
 }

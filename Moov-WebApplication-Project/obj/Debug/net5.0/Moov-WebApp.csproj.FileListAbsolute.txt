@@ -36,7 +36,6 @@ C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Moov-WebAp
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Moov-WebApp.Views.pdb
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Moov-WebApp.csproj.CopyComplete
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Moov-WebApp.dll
-C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\refint\Moov-WebApp.dll
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Moov-WebApp.pdb
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Moov-WebApp.genruntimeconfig.cache
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\ref\Moov-WebApp.dll
@@ -46,3 +45,5 @@ C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\assets\ven
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\BackendByPass.cshtml.g.cs
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\Menu.cshtml.g.cs
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\ErrorPage.cshtml.g.cs
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\MenuMoov.cshtml.g.cs
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\refint\Moov-WebApp.dll

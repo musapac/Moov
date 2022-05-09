@@ -32,7 +32,7 @@
         var token = "@ViewBag.tokenRet";
         const onboarding = document.querySelector('moov-onboarding');
         onboarding.token = token;
-        const moov = Moov(token);  
+        //const moov = Moov(token);  
         onboarding.facilitatorAccountID = "217b54bc-1842-470e-95b0-71d329fb19ca";
         onboarding.open = true; //calling onboarding screen
         onboarding.onCancel = () => {
@@ -48,7 +48,7 @@
                 var sc = `/fed.read,/accounts/${newAccountID}/bank-accounts.read,/accounts/${newAccountID}/bank-accounts.write,/accounts/${newAccountID}/capabilities.read,/accounts/${newAccountID}/capabilities.write,/accounts/${newAccountID}/cards.read,/accounts/${newAccountID}/cards.write,/accounts/${newAccountID}/profile.read,/accounts/${newAccountID}/profile.write,/accounts/${newAccountID}/representatives.read,/accounts/${newAccountID}/representatives.write`;
                 // TODO: Then again if you need token with new scopes, make anajax call to token request with new scopes
                 $.ajax({
-                    url: '/Moov/Token', // setting url
+                    url: '/Moov/Token', // setting url  //Moov/Token
                     type: 'POST',
                     dataType: 'text',
                     contentType: 'application/json',
@@ -56,6 +56,8 @@
                     success: function (response) {
                         myToken1 = response.replace('"', ''); // receiving token
                         myToken2 = myToken1.replace('"', ''); // receiving token
+                        console.log("Token === ");
+                        console.log(myToken2);
                           onboarding.token = myToken2;                          
                           onboarding.plaid = {
                               redirectURL: "https://localhost:44354",
@@ -65,27 +67,28 @@
                               onLoad: (...args) => console.log("on plaid load", ...args),
                               onSuccess: (...args) => console.log("on plaid success", ...args),
                             };
-
-                         //const moov = Moov(myToken2);                             
-                         moov.plaid.initialize({
+                             const moov = Moov(myToken2);
+                             var accountID=newAccountID;
+                          moov.accounts.bankAccounts.link({plaid: { token: myToken2}});
+                           
+                            moov.plaid.initialize({
                               accountID: newAccountID,
                               redirectURL: "https://localhost:44354",
                               onSuccess: (bankAccount) => {
-                                  debugger;
-                                  console.log("Bank Account"+ bankAccount);
+                                  console.log("Qwerty");
+                                  
                                 // Moov bank account object will be passed on success
                               },
                               onExit: (err, metadata) => {
+                                  alert("exit");
                                 //optionally handle exit event
                               },
                               onEvent: (eventName, metadata) => {
+                                  alert("event");
                                 //optionally handle events
                               }
                             })
-                              .then(handler => {
-                                handler.open()
-                              })
-
+                         
                     },
                     error: function () {
                         alert("error");
@@ -95,3 +98,4 @@
         }
     });
 </script>
+ 

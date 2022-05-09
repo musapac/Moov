@@ -49,6 +49,7 @@ namespace Moov_WebApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStatusCodePages();
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(
