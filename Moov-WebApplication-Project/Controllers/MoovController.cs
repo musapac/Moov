@@ -41,9 +41,10 @@ namespace Moov_WebApp.Controllers
             //var bankId = await UserAccount();
             await _accountService.AddCapabilities(accountId);            
             var bankId= await _accountService.LinkBankAccount(accountId);
-            var publicToken = await GenPublicToken();
-            await _accountService.AutoMicroDepositAsync(accountId, bankId);
-            var accessToken = await _accountService.ExchangePublicToken(publicToken);
+           // var publicToken = await GenPublicToken();
+            //await _accountService.AutoMicroDeposit(accountId, bankId);
+           // var g=await _accountService.CompleteMicroDeposit(accountId, bankId);
+           /* var accessToken = await _accountService.ExchangePublicToken(publicToken);
             var processorToken=await _accountService.ProcessorToken(accountId, accessToken);
             if (processorToken is not null)
             {
@@ -52,8 +53,8 @@ namespace Moov_WebApp.Controllers
             else
             {
                 return Redirect("/Moov/ErrorPage");
-            }
-           
+            }*/
+           return Ok(bankId);
         }
       
         public async Task<string> UserAccount()

@@ -17,6 +17,7 @@ namespace Moov.Application.Interfaces
         public Task<string> PublicToken();
         public Task<string> ExchangePublicToken(string publicToken);
         public Task<string> ProcessorToken(string accountId, string accessToken);
-        Task AutoMicroDepositAsync(string accountId, string bankId);
+        public Task AutoMicroDeposit(string accountId, string bankId);
+        public Task<string> CompleteMicroDeposit(string accountId,string bankId);
     }
 }

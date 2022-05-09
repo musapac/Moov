@@ -49,9 +49,9 @@ namespace Moov.Application.Services
                             {
                                 name = new Name()
                                 {
-                                    firstName = "Rose",
-                                    middleName = "Marry",
-                                    lastName = "David",
+                                    firstName = "Ox",
+                                    middleName = "Ox",
+                                    lastName = "Ox",
                                     suffix = "Jr"
                                 },
                                 phone = new Phone()
@@ -60,7 +60,7 @@ namespace Moov.Application.Services
                                     countryCode = "1"
 
                                 },
-                                email = "Musa@gmail.com",
+                                email = "ox@gmail.com",
                                 address = new Address()
                                 {
                                     addressLine1 = "123 Main Street",
@@ -367,9 +367,9 @@ namespace Moov.Application.Services
             else {
                 return null;
             }
-            return null;
+           
         }
-        public async Task AutoMicroDepositAsync(string accountId, string bankId)
+        public async Task AutoMicroDeposit(string accountId, string bankId)
         {
             var token = await _tokenService.ScopeToken($"/accounts/{accountId}/bank-accounts.write");
             if (token is not null)
@@ -387,6 +387,48 @@ namespace Moov.Application.Services
                 
             }
             
+        }
+        public async Task<string> CompleteMicroDeposit(string accountId, string bankId)
+        {
+            var bankAccountID = bankId;
+            var token = await _tokenService.ScopeToken($"/accounts/{accountId}/bank-accounts.write");
+            if (token is not null)
+            {
+                string accountbaseURL = $"https://api.moov.io/accounts/{accountId}/bank-accounts/{bankAccountID}/micro-deposits";
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(accountbaseURL);
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("Origin", value: _Config["Accounts:OriginUri"]);
+                    client.DefaultRequestHeaders.Add("Referer", value: _Config["Accounts:BaseUri"]);
+
+                    var request = new MicroDepositRequest
+                    { 
+                        amounts = new List<int>
+                        {
+                           0,0
+                        }
+                    };                     
+                    var requestBody = JsonConvert.SerializeObject(request);
+                    var stringContent = new StringContent(requestBody, UnicodeEncoding.UTF8, "application/json");
+                    var response = await client.PostAsync(accountbaseURL, stringContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<dynamic>(result);
+                        var status = data.status;
+                        return status;
+                    }
+                    else
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<dynamic>(result);
+                    }
+                    return null;
+                }
+            }
+            return null;
         }
     } 
     
