@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moov.Application.Interfaces;
 using Moov.Application.Moov.Request;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPiTest.Models.Moov.Request;
 
@@ -37,29 +39,49 @@ namespace Moov_WebApp.Controllers
         }
         public async Task<IActionResult> BackendByPass()
         {
-            var accountId = await UserAccount();
             //var bankId = await UserAccount();
-            await _accountService.AddCapabilities(accountId);            
-            var bankId= await _accountService.LinkBankAccount(accountId);
-           // var publicToken = await GenPublicToken();
-            //await _accountService.AutoMicroDeposit(accountId, bankId);
-           // var g=await _accountService.CompleteMicroDeposit(accountId, bankId);
-           /* var accessToken = await _accountService.ExchangePublicToken(publicToken);
-            var processorToken=await _accountService.ProcessorToken(accountId, accessToken);
-            if (processorToken is not null)
-            {
-                return View();
-            }
-            else
-            {
-                return Redirect("/Moov/ErrorPage");
-            }*/
-           return Ok(bankId);
+            //var bankId= await _accountService.LinkBankAccount(accountId);           
+            // await _accountService.AutoMicroDeposit(accountId, bankId);
+            // var stat = await _accountService.CompleteMicroDeposit(accountId, bankId);
+            var accountId = await UserAccount();
+            await _accountService.AddCapabilities(accountId);
+            var publicToken = await GenPublicToken();
+            var accessToken = await _accountService.ExchangePublicToken(publicToken);
+            var plaidAccountId = await _accountService.GetPlaidAccountId(accessToken);
+            var processorToken = await _accountService.ProcessorToken(plaidAccountId, accessToken);
+            var processortoken = await ProcessorToken(accountId);
+            return View();
         }
-      
+        public async Task<string> TermOfServiceToken()
+        {
+            var s=await _accountService.TermOfServiceToken();
+            return s;
+        }
+        public ActionResult HelloWorld()
+        { 
+            return View();
+            
+        }
+        public Task<string> Ios(string tosToken)
+        {
+            var i = tosToken;
+            return null;
+            
+        }
+        public async Task<string> ProcessorToken(string accountId)
+        {
+            var publicToken = await GenPublicToken();
+            var accessToken = await _accountService.ExchangePublicToken(publicToken);
+            var plaidAccountId = await _accountService.GetPlaidAccountId(accessToken);
+            var processorToken = await _accountService.ProcessorToken(plaidAccountId, accessToken);
+            await _accountService.PlaidProcessorLink(processorToken, plaidAccountId, accountId);
+            return null;
+        }
+        
         public async Task<string> UserAccount()
         {
-            var accId=await _accountService.CreateAccount();
+            var tosToken = "";
+            var accId=await _accountService.CreateAccount(tosToken);
             return accId;
         }
          

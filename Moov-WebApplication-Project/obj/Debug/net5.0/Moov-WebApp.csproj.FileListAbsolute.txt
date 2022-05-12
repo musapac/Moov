@@ -47,3 +47,4 @@ C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\View
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\ErrorPage.cshtml.g.cs
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\MenuMoov.cshtml.g.cs
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\refint\Moov-WebApp.dll
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\HelloWorld.cshtml.g.cs

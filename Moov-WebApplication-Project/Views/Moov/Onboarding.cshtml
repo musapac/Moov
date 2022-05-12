@@ -45,7 +45,7 @@
                 // getting accountID from localstorage
                 var newAccountID = localStorage.getItem('accountID');
                 // sc = all scopes are added in sc variable
-                var sc = `/fed.read,/accounts/${newAccountID}/bank-accounts.read,/accounts/${newAccountID}/bank-accounts.write,/accounts/${newAccountID}/capabilities.read,/accounts/${newAccountID}/capabilities.write,/accounts/${newAccountID}/cards.read,/accounts/${newAccountID}/cards.write,/accounts/${newAccountID}/profile.read,/accounts/${newAccountID}/profile.write,/accounts/${newAccountID}/representatives.read,/accounts/${newAccountID}/representatives.write`;
+                var sc = `/profile-enrichment.read,/fed.read,/accounts/${newAccountID}/bank-accounts.read,/accounts/${newAccountID}/bank-accounts.write,/accounts/${newAccountID}/capabilities.read,/accounts/${newAccountID}/capabilities.write,/accounts/${newAccountID}/cards.read,/accounts/${newAccountID}/cards.write,/accounts/${newAccountID}/profile.read,/accounts/${newAccountID}/profile.write,/accounts/${newAccountID}/representatives.read,/accounts/${newAccountID}/representatives.write`;
                 // TODO: Then again if you need token with new scopes, make anajax call to token request with new scopes
                 $.ajax({
                     url: '/Moov/Token', // setting url  //Moov/Token

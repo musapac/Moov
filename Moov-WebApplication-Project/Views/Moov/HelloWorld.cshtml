@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+<script src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>
+@*<script>
+    $(document).ready(function () {       
+                $.ajax({
+                    url: '/Moov/TermOfServiceToken', 
+                    type: 'GET',
+                    dataType: 'application/json',
+                    contentType: 'application/json',                 
+                    success: function (response) {
+                       
+                           console.log(response);
+                }}
+                );            
+        });
+</script>*@
+<script>
+     $(document).ready(function () {  
+             
+                $.ajax({  
+                    type: "GET",
+                    url : "https://api.moov.io/tos-token",
+                     headers: {
+                         "Accept":"application/json",
+                         "Content-Type":"application/json",
+                         "Origin":"https://api.moov.io",
+                         "Referer": 'https://api.moov.io'
+                     }, 
+                    dataType: 'json',  
+                    success: function (response) {  
+                    console.log('SUCCUSS : ' + response);
+                    var tosToken= response.token;
+                    abc(tosToken)
+                     }
+                    });
+                });
+</script>
+<script>
+    function abc(tosToken){
+ $.ajax({
+         data: JSON.stringify(tosToken),
+         type: "POST",
+         url: "Ios?tos="+tosToken,
+         contentType: "application/json; charset=utf-8",         
+         dataType: "text",
+         success: function (response) {
+             alert('Yay! It worked!');
+            
+             alert('I returned... ' + result.WhateverIsReturning);     
+             return tosToken;
+         },
+         error: function (result) {
+             alert('Oh no :(');
+         }
+     });   
+
+    }
+</script>
