@@ -521,6 +521,10 @@ namespace Moov.Application.Services
 
         }
 
+        public Task<string> TermOfServiceToken()
+        {
+            throw new NotImplementedException();
+        }
     } 
     
 }

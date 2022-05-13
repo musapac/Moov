@@ -48,3 +48,10 @@ C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\View
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\MenuMoov.cshtml.g.cs
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\refint\Moov-WebApp.dll
 C:\Workspace\Github\Moov\Moov-WebApplication-Project\obj\Debug\net5.0\Razor\Views\Moov\HelloWorld.cshtml.g.cs
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\System.Web.Mvc.dll
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\System.Web.Razor.dll
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\System.Web.Helpers.dll
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\System.Web.WebPages.Deployment.dll
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\System.Web.WebPages.dll
+C:\Workspace\Github\Moov\Moov-WebApplication-Project\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll

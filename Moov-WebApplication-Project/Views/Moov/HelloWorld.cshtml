@@ -33,26 +33,25 @@
                     console.log('SUCCUSS : ' + response);
                     var tosToken= response.token;
                     abc(tosToken)
+                             
                      }
                     });
                 });
 </script>
 <script>
-    function abc(tosToken){
+    function abc(tostoken){
  $.ajax({
-         data: JSON.stringify(tosToken),
-         type: "POST",
-         url: "Ios?tos="+tosToken,
-         contentType: "application/json; charset=utf-8",         
-         dataType: "text",
+         data: tostoken,
+         type: "post",
+         url: "helloworld?tok="+tostoken,
+         contenttype: "application/json; charset=utf-8",         
+         datatype: "text",
          success: function (response) {
-             alert('Yay! It worked!');
-            
-             alert('I returned... ' + result.WhateverIsReturning);     
-             return tosToken;
+             
+           
          },
          error: function (result) {
-             alert('Oh no :(');
+             alert('oh no :(');
          }
      });   
 

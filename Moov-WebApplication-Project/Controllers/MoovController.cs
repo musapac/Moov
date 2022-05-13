@@ -5,11 +5,13 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPiTest.Models.Moov.Request;
-
+ 
 namespace Moov_WebApp.Controllers
 {
     public class MoovController : Controller
     {
+        string tosToken ="";
+        private object tok;
         private readonly ITokenService _tokenService;
         private readonly IAccountService _accountService;
         public MoovController(ITokenService tokenService, IAccountService accountService)
@@ -43,7 +45,8 @@ namespace Moov_WebApp.Controllers
             //var bankId= await _accountService.LinkBankAccount(accountId);           
             // await _accountService.AutoMicroDeposit(accountId, bankId);
             // var stat = await _accountService.CompleteMicroDeposit(accountId, bankId);
-            var accountId = await UserAccount();
+            var tosToken = "";
+            var accountId = await UserAccount(tosToken);
             await _accountService.AddCapabilities(accountId);
             var publicToken = await GenPublicToken();
             var accessToken = await _accountService.ExchangePublicToken(publicToken);
@@ -57,11 +60,21 @@ namespace Moov_WebApp.Controllers
             var s=await _accountService.TermOfServiceToken();
             return s;
         }
-        public ActionResult HelloWorld()
-        { 
+        //public async IActionResult Toy()
+        //{
+        //    var o =  HelloWorld();
+        //}
+        public IActionResult HelloWorld(string tok)
+        {
+            if (tok is not null)
+            {
+                string tosToken = tok;
+            }
             return View();
-            
+ 
         }
+     
+        
         public Task<string> Ios(string tosToken)
         {
             var i = tosToken;
@@ -78,9 +91,9 @@ namespace Moov_WebApp.Controllers
             return null;
         }
         
-        public async Task<string> UserAccount()
+        public async Task<string> UserAccount(string tosToken)
         {
-            var tosToken = "";
+            
             var accId=await _accountService.CreateAccount(tosToken);
             return accId;
         }
@@ -96,7 +109,7 @@ namespace Moov_WebApp.Controllers
         }
         public async Task<IActionResult> MenuMoov()
         {
-            var getId = await UserAccount();
+            var getId = await UserAccount(tosToken);
             await _accountService.AddCapabilities(getId);
             await _accountService.LinkBankAccount(getId);
             return View();
@@ -105,12 +118,12 @@ namespace Moov_WebApp.Controllers
         public async Task Capabilities()
         
         {
-            var getId = await UserAccount();
+            var getId = await UserAccount(tosToken);
             await _accountService.AddCapabilities(getId);
         }
         public async Task BankAccount()
         {
-            var getId = await UserAccount();
+            var getId = await UserAccount(tosToken);
             await _accountService.LinkBankAccount(getId);
 
         }
