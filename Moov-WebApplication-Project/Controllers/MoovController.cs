@@ -19,8 +19,17 @@ namespace Moov_WebApp.Controllers
             _tokenService = tokenService;
             _accountService = accountService;
         }
+
         /// <summary>
-        /// creating access_token and sending to view;
+        /// This is the Main Menu
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Menu()
+        {
+            return View();
+        }
+        /// <summary>
+        /// creating account and link bank account by MOOV DROP
         /// </summary>
         /// <returns></returns>        
         public async Task<IActionResult> Onboarding()
@@ -39,13 +48,13 @@ namespace Moov_WebApp.Controllers
             var getScToken = await _tokenService.ScopeToken(scopes);
             return getScToken;
         }
+        /// <summary>
+        /// Account creating and linking bank account from one function
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> BackendByPass()
-        {
-            //var bankId = await UserAccount();
-            //var bankId= await _accountService.LinkBankAccount(accountId);           
-            // await _accountService.AutoMicroDeposit(accountId, bankId);
-            // var stat = await _accountService.CompleteMicroDeposit(accountId, bankId);
-            var tosToken = "";
+        {        
+            var tosToken = "y6z5CQpPOyvcxWzTBkOmOXyURR9w5a7Zdu9ArmRtggVncMbhtZDES757ZA9LImdojfBCfrsCVDIW6J7lNSjQ3xG0TePurz0wv2xLZKpMHGRpl9XcT6yF--bFB8HHKN9AKRz8gt2nHoTa5bDun2LUBWsLryN3";
             var accountId = await UserAccount(tosToken);
             await _accountService.AddCapabilities(accountId);
             var publicToken = await GenPublicToken();
@@ -55,32 +64,84 @@ namespace Moov_WebApp.Controllers
             var processortoken = await ProcessorToken(accountId);
             return View();
         }
+        /// <summary>
+        /// TermOfServices Token
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> TermOfServiceToken()
         {
-            var s=await _accountService.TermOfServiceToken();
+            var s = await _accountService.TermOfServiceToken();
             return s;
         }
-        //public async IActionResult Toy()
-        //{
-        //    var o =  HelloWorld();
-        //}
-        public IActionResult HelloWorld(string tok)
+        /// <summary>
+        /// getting new user's accountID
+        /// </summary>
+        /// <param name="tosToken"></param>
+        /// <returns></returns>
+        public async Task<string> UserAccount(string tosToken)
         {
-            if (tok is not null)
-            {
-                string tosToken = tok;
-            }
+            var accId=await _accountService.CreateAccount(tosToken);
+            return accId;
+        }          
+        public async Task<IActionResult> MenuMoov()
+        {
+            var getId = await UserAccount(tosToken);
+            await _accountService.AddCapabilities(getId);
+            await _accountService.LinkBankAccount(getId);
             return View();
- 
+
         }
-     
+        /// <summary>
+        /// Adding specific capabilities to enable transfer, collect and payout funds.
+        /// </summary>
+        /// <returns></returns>
+        public async Task Capabilities()
         
-        public Task<string> Ios(string tosToken)
         {
-            var i = tosToken;
-            return null;
-            
+            var getId = await UserAccount(tosToken);
+            await _accountService.AddCapabilities(getId);
         }
+        /// <summary>
+        /// Account created and linked with bank account
+        /// </summary>
+        /// <returns></returns>
+        public async Task BankAccount()
+        {
+            var getId = await UserAccount(tosToken);
+            await _accountService.LinkBankAccount(getId);
+
+        }
+        /// <summary>
+        /// Custom Error Page
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ErrorPage()
+        {
+            return View();
+        }
+        /// <summary>
+        /// Calling Plaid Token
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> Plaid()
+        {
+           var s= await _accountService.PlaidToken();
+            return s;
+        }
+        /// <summary>
+        /// Plaid Token Generater
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> GetPlaidToken()
+        {
+            var getLinkToken = await Plaid();
+            //ViewBag.getLinkToken = getLinkToken;
+            return getLinkToken;
+        }
+        /// Generating processor token for plaid linking
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         public async Task<string> ProcessorToken(string accountId)
         {
             var publicToken = await GenPublicToken();
@@ -90,68 +151,50 @@ namespace Moov_WebApp.Controllers
             await _accountService.PlaidProcessorLink(processorToken, plaidAccountId, accountId);
             return null;
         }
-        
-        public async Task<string> UserAccount(string tosToken)
-        {
-            
-            var accId=await _accountService.CreateAccount(tosToken);
-            return accId;
-        }
-         
         /// <summary>
-        /// This is the Main Menu
+        /// Generating Public Token
         /// </summary>
         /// <returns></returns>
-        public IActionResult Menu()
-        { 
-           return View();
-
-        }
-        public async Task<IActionResult> MenuMoov()
-        {
-            var getId = await UserAccount(tosToken);
-            await _accountService.AddCapabilities(getId);
-            await _accountService.LinkBankAccount(getId);
-            return View();
-
-        }
-        public async Task Capabilities()
-        
-        {
-            var getId = await UserAccount(tosToken);
-            await _accountService.AddCapabilities(getId);
-        }
-        public async Task BankAccount()
-        {
-            var getId = await UserAccount(tosToken);
-            await _accountService.LinkBankAccount(getId);
-
-        }
-        public IActionResult ErrorPage()
-        {
-            return View();
-        }
-        public async Task<string> Plaid()
-        {
-           var s= await _accountService.PlaidToken();
-            return s;
-        }
-        public async Task<string> GetPlaidToken()
-        {
-            var getLinkToken = await Plaid();
-            //ViewBag.getLinkToken = getLinkToken;
-            return getLinkToken;
-        }
         public async Task<string> GenPublicToken()
         {
             var getPublicToken = await _accountService.PublicToken();          
             return getPublicToken;
         }
+        /// <summary>
+        /// Public Token Exchange from Access Token
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> ExchangePublicTok()
         {
             var publicToken = await GenPublicToken();
             var accessToken = await _accountService.ExchangePublicToken(publicToken);
             return accessToken;
+        }
+        /// <summary>
+        /// Testing 
+        /// </summary>
+        /// <param name="tok"></param>
+        /// <returns></returns>
+        public IActionResult TosTokenGen(string tok)
+        {
+            if (tok is not null)
+            {
+                string tosToken = tok;
+            }
+            return View();
+
+        }
+        /// <summary>
+        /// 
+        /// Testing token
+        /// </summary>
+        /// <param name="tosToken"></param>
+        /// <returns></returns>
+        public Task<string> Ios(string tosToken)
+        {
+            var i = tosToken;
+            return null;
+
         }
     }
 }
